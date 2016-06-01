@@ -1,0 +1,9 @@
+package com.ericsson.cms.espn.domain
+
+class SiteGroups {
+
+	static hasMany = [from: MySite, to: MySite]
+	
+    static constraints = {
+    }
+}

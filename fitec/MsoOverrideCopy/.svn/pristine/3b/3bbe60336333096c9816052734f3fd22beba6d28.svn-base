@@ -1,0 +1,104 @@
+package com.ericsson.cms.espn.domain
+
+
+
+import static org.springframework.http.HttpStatus.*
+import grails.transaction.Transactional
+
+@Transactional(readOnly = true)
+class MySiteController {
+
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    def index(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        respond MySite.list(params), model:[mySiteInstanceCount: MySite.count()]
+    }
+
+    def show(MySite mySiteInstance) {
+        respond mySiteInstance
+    }
+
+    def create() {
+        respond new MySite(params)
+    }
+
+    @Transactional
+    def save(MySite mySiteInstance) {
+        if (mySiteInstance == null) {
+            notFound()
+            return
+        }
+
+        if (mySiteInstance.hasErrors()) {
+            respond mySiteInstance.errors, view:'create'
+            return
+        }
+
+        mySiteInstance.save flush:true
+
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'mySiteInstance.label', default: 'MySite'), mySiteInstance.id])
+                redirect mySiteInstance
+            }
+            '*' { respond mySiteInstance, [status: CREATED] }
+        }
+    }
+
+    def edit(MySite mySiteInstance) {
+        respond mySiteInstance
+    }
+
+    @Transactional
+    def update(MySite mySiteInstance) {
+        if (mySiteInstance == null) {
+            notFound()
+            return
+        }
+
+        if (mySiteInstance.hasErrors()) {
+            respond mySiteInstance.errors, view:'edit'
+            return
+        }
+
+        mySiteInstance.save flush:true
+
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'MySite.label', default: 'MySite'), mySiteInstance.id])
+                redirect mySiteInstance
+            }
+            '*'{ respond mySiteInstance, [status: OK] }
+        }
+    }
+
+    @Transactional
+    def delete(MySite mySiteInstance) {
+
+        if (mySiteInstance == null) {
+            notFound()
+            return
+        }
+
+        mySiteInstance.delete flush:true
+
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'MySite.label', default: 'MySite'), mySiteInstance.id])
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render status: NO_CONTENT }
+        }
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'mySiteInstance.label', default: 'MySite'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*'{ render status: NOT_FOUND }
+        }
+    }
+}

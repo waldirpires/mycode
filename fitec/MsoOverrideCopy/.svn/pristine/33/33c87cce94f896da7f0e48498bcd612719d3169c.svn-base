@@ -1,0 +1,10 @@
+package com.ericsson.cms.espn.domain
+
+class MySite {
+
+	String id
+	String name
+	
+    static constraints = {
+    }
+}

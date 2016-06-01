@@ -1,0 +1,12 @@
+<%@ page import="com.ericsson.cms.espn.domain.MySite" %>
+
+
+
+<div class="fieldcontain ${hasErrors(bean: mySiteInstance, field: 'name', 'error')} ">
+	<label for="name">
+		<g:message code="mySite.name.label" default="Name" />
+		
+	</label>
+	<g:textField name="name" value="${mySiteInstance?.name}"/>
+</div>
+

@@ -1,0 +1,24 @@
+
+<title><g:message code="tool.label"/></title>
+
+<h1><g:message code="tool.label"/></h1>
+
+<div >
+<div class="fieldcontain ${hasErrors} ">
+	<label for="from">
+		<!--<g:message code="mySite.name.label" default="Name" />-->
+		
+		<g:message code="site.source.label" default="Site Group SRC" />
+	</label>
+		<g:select name="from" from="${sitesList}"  optionKey="ID" value="${siteGroupsInstance?.from*.id}" class="many-to-many"/>
+	</div>
+	<div class="fieldcontain ${hasErrors} ">
+	<label for="to">
+		<!--<g:message code="mySite.name.label" default="Name" />-->
+		
+		<g:message code="site.destination.label" default="Site Group DST" />
+	</label>
+		<g:select name="to" from="${sitesList}"  optionKey="ID" value="${siteGroupsInstance?.from*.id}" class="many-to-many"/>
+	</div>
+</div>
+

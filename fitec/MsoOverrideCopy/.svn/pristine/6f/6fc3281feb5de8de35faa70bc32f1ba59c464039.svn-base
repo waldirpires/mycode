@@ -1,0 +1,20 @@
+<%@ page import="com.ericsson.cms.espn.domain.SiteGroups" %>
+
+
+
+<div class="fieldcontain ${hasErrors(bean: siteGroupsInstance, field: 'from', 'error')} ">
+	<label for="from">
+		<g:message code="siteGroups.from.label" default="From" />
+		
+	</label>
+	<g:select name="from" from="${com.ericsson.cms.espn.entity.Sites.list()}"  optionKey="ID" value="${siteGroupsInstance?.from*.id}" class="many-to-many"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: siteGroupsInstance, field: 'to', 'error')} ">
+	<label for="to">
+		<g:message code="siteGroups.to.label" default="To" />
+		
+	</label>
+	<g:select name="to" from="${com.ericsson.cms.espn.entity.Sites.list()}" optionKey="ID" value="${siteGroupsInstance?.to*.id}" class="many-to-many"/>
+</div>
+

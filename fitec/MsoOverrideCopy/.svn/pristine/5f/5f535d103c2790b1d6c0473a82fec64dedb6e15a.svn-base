@@ -1,0 +1,67 @@
+package com.ericsson.cms.espn.controller
+
+import org.apache.commons.lang.StringUtils;
+
+class SitesController {
+
+	def sitesService
+	
+    def index() {
+		
+		def sitesList = sitesService.getSites()
+		
+		redirect sitesList, model:[sitesList: sitesList, siteInstanceCount: sitesList.size()]
+
+	}
+	
+	def create() {
+		
+		def sitesList = sitesService.getSites()
+		
+		respond sitesList, model:[sitesList: sitesList, siteInstanceCount: sitesList.size()]
+
+	}
+	
+	def getSites()
+	{
+		def sitesList = sitesService.getSites()
+		
+		respond sitesList, model:[sitesList: sitesList, siteInstanceCount: sitesList.size()]
+	}
+	
+	def executeCopy()
+	{
+		def srcSiteId = params.srcSiteId
+		def destSiteId = params.destSiteId
+		
+		if (StringUtils.isEmpty(srcSiteId))
+		{
+			request.withFormat {
+				form {
+					flash.message = message(code: 'default.srsSite.message', args: [message(code: 'MySite.label', default: 'from')])
+					redirect action:"index", method:"GET"
+				}
+				'*'{ render status: NO_CONTENT }
+			}	
+		}
+		if (StringUtils.isEmpty(destSiteId))
+		{
+			request.withFormat {
+				form {
+					flash.message = message(code: 'default.destSite.message', args: [message(code: 'MySite.label', default: 'to')])
+					redirect action:"index", method:"GET"
+				}
+				'*'{ render status: NO_CONTENT }
+			}
+		}
+
+		request.withFormat {
+			form {
+				flash.message = message(code: 'default.copy.message', args: [])
+				redirect index
+			}
+			'*'{ respond mySiteInstance, [status: OK] }
+		}
+
+	}
+}
